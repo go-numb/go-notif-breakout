@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/go-numb/go-utilitys/notify"
 	"github.com/labstack/gommon/log"
-	"gitlab.com/k-terashima/utils/go-notify"
 
 	"github.com/go-numb/go-notif-breakout/api"
 )
@@ -36,10 +36,10 @@ func main() {
 		ID:        id,
 		Token:     token,
 		ChannelID: "notif-bots",
-		Name:      fmt.Sprintf("%s is BREAKOUT !!", strings.ToUpper(product)),
+		PostName:  fmt.Sprintf("%s is BREAKOUT !!", strings.ToUpper(product)),
 		Message:   "",
 	}
-	discord.Set("start program")
+	discord.Message = "start program"
 	if err := discord.Send(); err != nil {
 		log.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func main() {
 		select {
 		case s := <-ch:
 			fmt.Printf("get signal: %s\n", s)
-			discord.Set(s)
+			discord.Message = s
 			if err := discord.Send(); err != nil {
 				log.Fatal(err)
 			}
