@@ -16,10 +16,12 @@ import (
 var (
 	f       *os.File
 	product string
+	term    int
 )
 
 func init() {
 	flag.StringVar(&product, "product", "btcusdt", "option <-product> is read websocket channel, default btcusdt.")
+	flag.IntVar(&term, "term", 120, "option <-term> is use term for price range, default 120 as 2hours.")
 	flag.Parse()
 }
 
@@ -45,7 +47,7 @@ func main() {
 	ch := make(chan string)
 	ctx, cancel := context.WithCancel(context.Background())
 	client := api.New()
-	go client.Connect(ctx, ch, 30, product)
+	go client.Connect(ctx, ch, term, product)
 
 	done := make(chan os.Signal)
 
